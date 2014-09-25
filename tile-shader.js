@@ -6,17 +6,17 @@ ig.module(
     TileShader = ig.Class.extend({
 
         viewSize: {x:0, y:0},
-        
+
         /**
          * BackgroundMap that stores all light tiles
          */
         lightMap: null,
-        
+
         /**
          * Multi-dimensional array that stores info about tiles in line of sight
          */
         losData: null,
-        
+
         tileSize: 0,
         fillCircle: true,
         innerShade: 0,
@@ -70,7 +70,7 @@ ig.module(
             this.maxY = this.shaderMap.height - 1;
 
         },
-                
+
         addEntity: function (entity) {
             if (entity.lightOptions === undefined) {
                 entity.lightOptions = {
@@ -82,15 +82,15 @@ ig.module(
             this.entities.push(entity);
             this.forceDrawNextFrame = true;
         },
-                
+
         removeEntity: function(entity) {
             var index = this.entities.indexOf(entity);
             if (index > -1) {
-                this.entities.splice(index);
+                this.entities.splice(index, 1);
             }
             this.forceDrawNextFrame = true;
         },
-                
+
         clear: function (lightValue) {
             for (var iY = 0; iY < this.viewSize.y; iY++) {
                 for (var iX = 0; iX < this.viewSize.x; iX++) {
@@ -99,7 +99,7 @@ ig.module(
                 }
             }
         },
-                
+
         checkLos:function (fromLocalX, fromLocalY, toLocalX, toLocalY) {
             var tilesX = ig.game.screen.x / (this.tileSize);
             var tilesY = ig.game.screen.y / (this.tileSize);
@@ -312,7 +312,7 @@ ig.module(
             // no forced redraw yet? just draw
             this.doDraw(false);
         },
-                
+
         doDraw: function( forceRedraw, offsetX, offsetY ) {
             if (forceRedraw) {
                 this.clear(this.ambientLight);
@@ -335,13 +335,13 @@ ig.module(
             ig.system.context.drawImage(this.lightImage, 0, 0);
             this.forceDrawNextFrame = false;
         },
-                
+
         getEntityTile: function(entity) {
             var offsetX = (ig.game.screen.x % this.tileSize);
             var offsetY = (ig.game.screen.y % this.tileSize);
             var entityX = Math.floor(((entity.pos.x - ig.game.screen.x + offsetX) / this.tileSize));
             var entityY = Math.floor(((entity.pos.y - ig.game.screen.y + offsetY) / this.tileSize));
             return {x: entityX, y: entityY};
-        }                
+        }
     });
 });
